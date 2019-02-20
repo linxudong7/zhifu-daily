@@ -8,10 +8,10 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lxd.educ.service;
+package lxd.zhihu.service;
 
-import com.lxd.educ.entity.MessageInfo;
-import com.lxd.educ.result.SendResult;
+import lxd.zhihu.entity.MessageInfo;
+import lxd.zhihu.result.SendResult;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -24,7 +24,7 @@ import com.lxd.educ.result.SendResult;
 
 public interface DingtalkService {
     /**
-     *
+     *发送一次消息
      * @param messageInfo
      * @return
      */

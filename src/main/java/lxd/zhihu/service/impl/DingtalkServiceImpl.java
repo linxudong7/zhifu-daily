@@ -8,21 +8,19 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lxd.educ.service.impl;
+package lxd.zhihu.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lxd.educ.entity.MessageInfo;
-import com.lxd.educ.entity.Story;
-import com.lxd.educ.entity.ZhifuDaily;
-import com.lxd.educ.message.MarkdownMessage;
-import com.lxd.educ.result.SendResult;
-import com.lxd.educ.service.DingtalkService;
-import com.lxd.educ.service.ZhiFuDailyService;
-import com.lxd.educ.utils.DateUtils;
+import lxd.zhihu.entity.MessageInfo;
+import lxd.zhihu.entity.StoryEntity;
+import lxd.zhihu.entity.LatestNewsEntity;
+import lxd.zhihu.message.MarkdownMessage;
+import lxd.zhihu.result.SendResult;
+import lxd.zhihu.service.DingtalkService;
+import lxd.zhihu.service.ZhihuNewsService;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -30,7 +28,6 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,11 +44,11 @@ public class DingtalkServiceImpl implements DingtalkService {
     HttpClient httpclient = HttpClients.createDefault();
 
     @Autowired
-    private ZhiFuDailyService zhiFuDailyService;
+    private ZhihuNewsService zhihuNewsService;
 
     @Override
     public SendResult sendMessage(MessageInfo messageInfo) {
-        //构建MarkdownMessage信息
+        /*//构建MarkdownMessage信息
         MarkdownMessage markdownMessage = new MarkdownMessage();
         markdownMessage.setTitle("知乎日报");
         markdownMessage.setMsgType(messageInfo.getMsgType());
@@ -67,9 +64,9 @@ public class DingtalkServiceImpl implements DingtalkService {
         markdownMessage.add("\n\n");
         markdownMessage.add(MarkdownMessage.getHeaderText(3, "知乎日报"));
         //拿到知乎新闻信息
-        ZhifuDaily zhifuDailyMessage = zhiFuDailyService.getMessage();
-        List<Story> stories = zhifuDailyMessage.getStories();
-        for (Story story: stories
+        LatestNewsEntity zhifuDailyMessage = zhihuNewsService.getMessage();
+        List<StoryEntity> stories = zhifuDailyMessage.getStories();
+        for (StoryEntity story: stories
              ) {
             markdownMessage.add(MarkdownMessage.getLinkText(story.getTitle(), "https://news-at.zhihu.com/story/" + story.getId()));
             markdownMessage.add("\n\n");
@@ -85,7 +82,7 @@ public class DingtalkServiceImpl implements DingtalkService {
         SendResult sendResult = new SendResult();
         //调用钉钉api发送消息
         try {
-            HttpPost httpPost = new HttpPost(messageInfo.getWebhock());
+            HttpPost httpPost = new HttpPost(messageInfo.getWebhook());
             httpPost.addHeader("Content-Type", "application/json; charset=utf-8");
             StringEntity se = new StringEntity(markdownMessage.toJsonString(), "utf-8");
             httpPost.setEntity(se);
@@ -102,6 +99,7 @@ public class DingtalkServiceImpl implements DingtalkService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sendResult;
+        return sendResult;*/
+        return null;
     }
 }

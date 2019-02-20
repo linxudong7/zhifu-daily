@@ -1,4 +1,4 @@
-package com.lxd.educ.message;
+package lxd.zhihu.message;
 
 /**
  * @author rubby

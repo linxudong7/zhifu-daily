@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lxd.educ.entity;
+package lxd.zhihu.entity;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class MessageInfo {
     /**
      * 机器人地址
      */
-    private String webhock;
+    private String webhook;
     /**
      * 电话号码
      */
@@ -50,12 +50,12 @@ public class MessageInfo {
         this.msgType = msgType;
     }
 
-    public String getWebhock() {
-        return webhock;
+    public String getWebhook() {
+        return webhook;
     }
 
-    public void setWebhock(String webhock) {
-        this.webhock = webhock;
+    public void setWebhook(String webhook) {
+        this.webhook = webhook;
     }
 
     public List<String> getAtMobiles() {
@@ -84,7 +84,7 @@ public class MessageInfo {
 
     public MessageInfo(String msgType, String webhock, List<String> atMobiles, String type, Long interval) {
         this.msgType = msgType;
-        this.webhock = webhock;
+        this.webhook = webhock;
         this.atMobiles = atMobiles;
         this.type = type;
         this.interval = interval;

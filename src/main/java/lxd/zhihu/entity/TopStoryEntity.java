@@ -1,6 +1,6 @@
 /**
  * Copyright (C), 2015-2019, XXX有限公司
- * FileName: TopStory
+ * FileName: TopStoryEntity
  * Author:   rubby
  * Date:     2019/2/19 14:26
  * Description:
@@ -8,11 +8,14 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lxd.educ.entity;
+package lxd.zhihu.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dingtalk.chatbot.message.Message;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 热点新闻
@@ -21,12 +24,16 @@ import java.io.Serializable;
  * @create 2019/2/19
  * @since 1.0.0
  */
-public class TopStory implements Serializable {
+public class TopStoryEntity implements Message {
+    @JSONField(ordinal = 0)
     private String image;
+    @JSONField(ordinal = 1)
     private Integer type;
+    @JSONField(ordinal = 2)
     private Integer id;
-    @JsonProperty("ga_prefix")
+    @JSONField(ordinal = 3,name = "ga_prefix")
     private String gaPrefix;
+    @JSONField(ordinal = 4)
     private String title;
 
     public String getImage() {
@@ -70,13 +77,14 @@ public class TopStory implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "top_Story{" +
-                "image='" + image + '\'' +
-                ", type=" + type +
-                ", id=" + id +
-                ", ga_prefix='" + gaPrefix + '\'' +
-                ", title='" + title + '\'' +
-                '}';
+    public String toJsonString() {
+        Map<String, Object> story = new HashMap<String, Object>();
+        story.put("image", image);
+        story.put("type", type);
+        story.put("id", id);
+        story.put("ga_prefix", gaPrefix);
+        story.put("title", title);
+        return JSON.toJSONString(story);
     }
+
 }

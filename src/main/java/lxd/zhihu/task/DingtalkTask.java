@@ -8,11 +8,14 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lxd.educ.task;
+package lxd.zhihu.task;
 
-import com.lxd.educ.entity.MessageInfo;
-import com.lxd.educ.exception.RRException;
-import com.lxd.educ.service.DingtalkService;
+import lxd.zhihu.entity.MessageInfo;
+import lxd.zhihu.exception.RRException;
+import lxd.zhihu.service.DingtalkService;
+import lxd.zhihu.service.ZhihuNewsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,14 +30,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class DingtalkTask {
 
+    private static final Logger logger = LoggerFactory.getLogger(DingtalkTask.class);
+
     @Autowired
     private DingtalkService dingtalkService;
 
+    @Autowired
+    private ZhihuNewsService zhihuNewsService;
+
     public void sendMessage(MessageInfo messageInfo){
         try {
+
             dingtalkService.sendMessage(messageInfo);
 
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             throw new RRException("数据有误！");
         }
 

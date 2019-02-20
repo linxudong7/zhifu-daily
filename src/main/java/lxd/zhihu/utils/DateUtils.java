@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.lxd.educ.utils;
+package lxd.zhihu.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;

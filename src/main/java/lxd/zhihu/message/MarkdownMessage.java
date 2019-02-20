@@ -1,4 +1,4 @@
-package com.lxd.educ.message;
+package lxd.zhihu.message;
 
 import com.alibaba.fastjson.JSON;
 
@@ -135,7 +135,7 @@ public class MarkdownMessage implements Message {
         markdown.put("text", markdownText.toString());
         result.put("markdown", markdown);
 
-       Map<String, Object> atItems = new HashMap<String, Object>();
+        Map<String, Object> atItems = new HashMap<String, Object>();
         if (atMobiles != null && !atMobiles.isEmpty()) {
             atItems.put("atMobiles", atMobiles);
         }

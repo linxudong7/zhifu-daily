@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.lxd.educ.exception;
+package lxd.zhihu.exception;
 
 /**
  * 自定义异常

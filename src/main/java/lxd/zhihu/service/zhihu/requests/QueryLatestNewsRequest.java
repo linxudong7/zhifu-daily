@@ -10,6 +10,11 @@
  */
 package lxd.zhihu.service.zhihu.requests;
 
+
+import lxd.zhihu.service.zhihu.responses.LatestNewsResponse;
+
+import java.util.UUID;
+
 /**
  * 〈一句话功能简述〉<br> 
  * 〈〉
@@ -18,10 +23,10 @@ package lxd.zhihu.service.zhihu.requests;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class QueryLatestNewsRequest extends BaseZhihuRequest {
-    public QueryLatestNewsRequest(String uri, String httpType) {
-        this.setUri(uri);
-        this.setHttpType(httpType);
-        this.setGenerateUri(uri);
+public class QueryLatestNewsRequest extends BaseZhihuRequest<LatestNewsResponse> {
+    public QueryLatestNewsRequest() {
+        this.setUri("https://news-at.zhihu.com/api/4/news/latest");
+        this.setHttpType("get");
+        this.setRequestId(UUID.randomUUID().toString().replaceAll("-", ""));
     }
 }

@@ -16,18 +16,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 〈一句话功能简述〉<br> 
- * 〈〉
+ * 知乎统一返回值
  *
  * @author rubby
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class BaseZhihuResponse {
+public class BaseZhihuResponse<T> {
 
     private boolean isSuccess;
 
-    private String msg;
+    private java.lang.String msg;
+
+    private Integer code;
+
+    private java.lang.String requestId;
 
     private String data;
 
@@ -47,6 +50,22 @@ public class BaseZhihuResponse {
         this.msg = msg;
     }
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public java.lang.String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(java.lang.String requestId) {
+        this.requestId = requestId;
+    }
+
     public String getData() {
         return data;
     }
@@ -60,6 +79,8 @@ public class BaseZhihuResponse {
         Map<java.lang.String, Object> items = new HashMap<java.lang.String, Object>();
         items.put("msg", msg);
         items.put("data", data);
+        items.put("code", code);
+        items.put("requestId", requestId);
         items.put("isSuccess", isSuccess);
         return JSON.toJSONString(items);
     }

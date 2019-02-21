@@ -20,7 +20,7 @@ import lxd.zhihu.entity.LatestNewsEntity;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class LatestNewsResponse extends BaseZhihuResponse {
+public class LatestNewsResponse extends BaseZhihuResponse<LatestNewsEntity> {
     private LatestNewsEntity latestNewsEntity;
 
     public LatestNewsEntity getLatestNewsEntity() {

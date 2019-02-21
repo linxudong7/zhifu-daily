@@ -10,6 +10,7 @@
  */
 package lxd.zhihu.service.zhihu;
 
+import lxd.zhihu.enums.HttpType;
 import lxd.zhihu.service.zhihu.requests.BaseZhihuRequest;
 import lxd.zhihu.service.zhihu.responses.BaseZhihuResponse;
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 〈一句话功能简述〉<br> 
+ * 〈一句话功能简述〉<br>
  * 〈〉
  *
  * @author rubby
@@ -44,45 +45,50 @@ public class ZhihuClient {
     private String accessKey;
     private String secretKey;
 
-    private static String generateSign(BaseZhihuRequest request){
+    private static String generateSign(BaseZhihuRequest request) {
         // TODO:
         return "";
     }
 
-    public BaseZhihuResponse getResponse(BaseZhihuRequest request){
-
-        BaseZhihuResponse baseZhihuResponse = new BaseZhihuResponse();
+    public BaseZhihuResponse getResponse(BaseZhihuRequest request) {
 
         // TODO:
         String sign = generateSign(request);
 
+        BaseZhihuResponse baseZhihuResponse = new BaseZhihuResponse();
+        CloseableHttpResponse httpResponse =null;
+        baseZhihuResponse.setRequestId(request.getRequestId());
         try {
-            CloseableHttpResponse httpResponse = null;
-            if ("get".equals(request.getHttpType())) {
-                HttpGet get = new HttpGet(request.getGenerateUri());
-                 httpResponse = client.execute(get);
+            if (HttpType.GET.getType().equals(request.getHttpType())) {
+                HttpGet get = new HttpGet(request.getUri());
+                httpResponse = client.execute(get);
             } else {
-                HttpPost post = new HttpPost(request.getGenerateUri());
+                HttpPost post = new HttpPost(request.getUri());
                 httpResponse = client.execute(post);
             }
-
-            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                String jsonResult = EntityUtils.toString(httpResponse.getEntity());
-                baseZhihuResponse.setData(jsonResult);
-                if (! StringUtils.isBlank(jsonResult)){
-                    baseZhihuResponse.setSuccess(true);
-                } else {
-                    baseZhihuResponse.setSuccess(false);
-                    baseZhihuResponse.setMsg("Http请求失败");
-                }
-            }
-            logger.info("知乎http请求成功");
-            return baseZhihuResponse;
         } catch (IOException e) {
-            e.printStackTrace();
             logger.error(e.getMessage(), e);
         }
 
+        if (httpResponse != null && httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String jsonResult = null;
+            try {
+                jsonResult = EntityUtils.toString(httpResponse.getEntity());
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+            baseZhihuResponse.setData(jsonResult);
+            if (!StringUtils.isBlank(jsonResult)) {
+                baseZhihuResponse.setSuccess(true);
+                baseZhihuResponse.setCode(200);
+                baseZhihuResponse.setMsg("http请求成功");
+            } else {
+                baseZhihuResponse.setSuccess(false);
+                baseZhihuResponse.setCode(-90);
+                baseZhihuResponse.setMsg("Http请求失败");
+            }
+
+        }
         return baseZhihuResponse;
     }
 

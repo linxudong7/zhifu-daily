@@ -16,7 +16,10 @@ import lxd.zhihu.service.zhihu.requests.QueryLatestNewsRequest;
 import lxd.zhihu.service.zhihu.requests.QueryOldNewsRequest;
 import lxd.zhihu.service.zhihu.responses.HotNewsResponse;
 import lxd.zhihu.service.zhihu.responses.LatestNewsResponse;
+import lxd.zhihu.service.zhihu.responses.ListOldNewsResponse;
 import lxd.zhihu.service.zhihu.responses.OldNewsResponse;
+
+import java.util.List;
 
 
 /**
@@ -33,10 +36,10 @@ public interface ZhihuNewsService {
      * @param request
      * @return
      */
-    LatestNewsResponse queryLasestNews(QueryLatestNewsRequest request);
+    LatestNewsResponse queryLatestNews(QueryLatestNewsRequest request);
 
     /**
-     * 根据date查询过往消息
+     * 根据时间查询过往消息
      * @param request
      * @return
      */
@@ -48,4 +51,11 @@ public interface ZhihuNewsService {
      * @return
      */
     HotNewsResponse queryHotNews(QueryHotNewsRequest request);
+
+    /**
+     * 根据时间区间查询过往消息
+     * @param dateRangeStr 格式:20180101/20181231
+     * @return
+     */
+    List<OldNewsResponse> listOldNewsByDateRange(String dateRangeStr);
 }

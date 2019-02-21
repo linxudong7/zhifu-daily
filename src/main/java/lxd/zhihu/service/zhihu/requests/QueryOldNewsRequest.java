@@ -10,6 +10,10 @@
  */
 package lxd.zhihu.service.zhihu.requests;
 
+import lxd.zhihu.service.zhihu.responses.OldNewsResponse;
+
+import java.util.UUID;
+
 /**
  * 〈一句话功能简述〉<br> 
  * 〈〉
@@ -18,7 +22,7 @@ package lxd.zhihu.service.zhihu.requests;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class QueryOldNewsRequest extends BaseZhihuRequest {
+public class QueryOldNewsRequest extends BaseZhihuRequest<OldNewsResponse> {
     private String dateStr;
 
     public String getDateStr() {
@@ -29,10 +33,10 @@ public class QueryOldNewsRequest extends BaseZhihuRequest {
         this.dateStr = dateStr;
     }
 
-    public QueryOldNewsRequest(String uri, String httpType, String dateStr) {
-        this.setUri(uri);
-        this.setHttpType(httpType);
-        this.setGenerateUri(uri + "/" + dateStr);
+    public QueryOldNewsRequest(String dateStr) {
+        this.setUri("https://news-at.zhihu.com/api/4/news/before/" + dateStr);
+        this.setHttpType("get");
+        this.setRequestId(UUID.randomUUID().toString().replaceAll("-", ""));
         this.dateStr = dateStr;
     }
 }

@@ -10,21 +10,24 @@
  */
 package lxd.zhihu.service.zhihu.requests;
 
+import lxd.zhihu.service.zhihu.responses.BaseZhihuResponse;
+
 /**
- * 〈一句话功能简述〉<br> 
- * 〈〉
+ * 知乎统一请求值
  *
  * @author rubby
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class BaseZhihuRequest {
+public class BaseZhihuRequest<T extends BaseZhihuResponse> {
 
     private String uri;
 
     private String httpType;
 
-    private String generateUri;
+    private String requestId;
+
+    private T response;
 
     public String getUri() {
         return uri;
@@ -42,11 +45,19 @@ public class BaseZhihuRequest {
         this.httpType = httpType;
     }
 
-    public String getGenerateUri() {
-        return generateUri;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setGenerateUri(String generateUri) {
-        this.generateUri = generateUri;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public T getResponse() {
+        return response;
+    }
+
+    public void setResponse(T response) {
+        this.response = response;
     }
 }

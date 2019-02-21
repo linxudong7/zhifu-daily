@@ -9,13 +9,9 @@
  * 作者姓名           修改时间           版本号              描述
  */
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import lxd.zhihu.entity.HotNewEntity;
-import lxd.zhihu.entity.MessageInfo;
+import lxd.zhihu.entity.HotNewsEntity;
 import lxd.zhihu.entity.LatestNewsEntity;
 import lxd.zhihu.entity.OldNewsEntity;
-import lxd.zhihu.service.DingtalkService;
 import lxd.zhihu.service.ZhihuNewsService;
 import lxd.zhihu.service.zhihu.requests.QueryHotNewsRequest;
 import lxd.zhihu.service.zhihu.requests.QueryLatestNewsRequest;
@@ -29,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -50,25 +46,40 @@ public class ZhihuServiceTest {
 
     @Test
     public void queryLatestNewsTest() {
-        QueryLatestNewsRequest queryLatestNewsRequest = new QueryLatestNewsRequest("https://news-at.zhihu.com/api/4/news/latest","get");
-        LatestNewsResponse latestNewsResponse = zhihuNewsService.queryLasestNews(queryLatestNewsRequest);
+        QueryLatestNewsRequest queryLatestNewsRequest = new QueryLatestNewsRequest();
+        LatestNewsResponse latestNewsResponse = zhihuNewsService.queryLatestNews(queryLatestNewsRequest);
         LatestNewsEntity latestNewsEntity = latestNewsResponse.getLatestNewsEntity();
         System.out.println(latestNewsEntity.toJsonString());
     }
 
     @Test
     public void queryOldNewsTest() {
-        QueryOldNewsRequest queryOldNewsRequest = new QueryOldNewsRequest("https://news-at.zhihu.com/api/4/news/before", "get", "20190220");
+        QueryOldNewsRequest queryOldNewsRequest = new QueryOldNewsRequest("20190102");
         OldNewsResponse oldNewsResponse = zhihuNewsService.queryOldNewsByDate(queryOldNewsRequest);
         OldNewsEntity oldNewsEntity = oldNewsResponse.getOldNewsEntity();
         System.out.println(oldNewsEntity.toJsonString());
     }
 
     @Test
+    public void ListOldNewsTest() {
+        List<OldNewsResponse> oldNewsResponses = zhihuNewsService.listOldNewsByDateRange("20180102/20180202");
+        for (OldNewsResponse response: oldNewsResponses
+             ) {
+            OldNewsEntity oldNewsEntity = response.getOldNewsEntity();
+            System.out.println(oldNewsEntity.toJsonString());
+        }
+    }
+    @Test
     public void queryHotNewsTest() {
-        QueryHotNewsRequest queryHotNewsRequest = new QueryHotNewsRequest("https://news-at.zhihu.com/api/3/news/hot", "get");
+        QueryHotNewsRequest queryHotNewsRequest = new QueryHotNewsRequest();
         HotNewsResponse hotNewsResponse = zhihuNewsService.queryHotNews(queryHotNewsRequest);
-        List<HotNewEntity> hotNewEntities = hotNewsResponse.getHotNewEntities();
-        System.out.println(hotNewEntities.get(0).toJsonString());
+        System.out.println(hotNewsResponse.toString());
+        HotNewsEntity hotNewsEntity = hotNewsResponse.getHotNewsEntity();
+        System.out.println(hotNewsEntity.toJsonString());
+    }
+    @Test
+    public void Test() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        System.out.println(uuid);
     }
 }

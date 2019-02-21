@@ -10,10 +10,8 @@
  */
 package lxd.zhihu.service.zhihu.responses;
 
-import lxd.zhihu.entity.HotNewEntity;
-import lxd.zhihu.entity.LatestNewsEntity;
+import lxd.zhihu.entity.HotNewsEntity;
 
-import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -23,14 +21,14 @@ import java.util.List;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class HotNewsResponse extends BaseZhihuResponse {
-    private List<HotNewEntity> hotNewEntities;
+public class HotNewsResponse extends BaseZhihuResponse<HotNewsEntity> {
+    private HotNewsEntity hotNewsEntity;
 
-    public List<HotNewEntity> getHotNewEntities() {
-        return hotNewEntities;
+    public HotNewsEntity getHotNewsEntity() {
+        return hotNewsEntity;
     }
 
-    public void setHotNewEntities(List<HotNewEntity> hotNewEntities) {
-        this.hotNewEntities = hotNewEntities;
+    public void setHotNewsEntity(HotNewsEntity hotNewsEntity) {
+        this.hotNewsEntity = hotNewsEntity;
     }
 }

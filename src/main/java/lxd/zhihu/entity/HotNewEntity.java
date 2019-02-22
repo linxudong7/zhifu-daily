@@ -25,7 +25,7 @@ import java.util.Map;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class HotNewEntity implements Message {
+public class HotNewEntity {
     @JSONField(ordinal = 0, name = "news_id")
     private Long newsId;
     @JSONField(ordinal = 1)
@@ -67,9 +67,8 @@ public class HotNewEntity implements Message {
         this.title = title;
     }
 
-    @Override
     public String toJsonString() {
-        Map<String, Object> hotNewEntity = new HashMap<String, Object>();
+        Map<String, Object> hotNewEntity = new HashMap<>();
         hotNewEntity.put("news_id", newsId);
         hotNewEntity.put("url", url);
         hotNewEntity.put("thumbnail", thumbnail);

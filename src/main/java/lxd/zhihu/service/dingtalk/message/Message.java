@@ -1,4 +1,4 @@
-package lxd.zhihu.message;
+package lxd.zhihu.service.dingtalk.message;
 
 /**
  * @author rubby

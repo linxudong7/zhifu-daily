@@ -26,7 +26,7 @@ import java.util.Map;
  * @create 2019/2/19
  * @since 1.0.0
  */
-public class LatestNewsEntity implements Message {
+public class LatestNewsEntity {
     @JSONField(ordinal = 0)
     private String date;
     @JSONField(ordinal = 1)
@@ -58,9 +58,8 @@ public class LatestNewsEntity implements Message {
         this.topStories = topStories;
     }
 
-    @Override
     public String toJsonString() {
-        Map<String, Object> latestNewsEntity = new HashMap<String, Object>();
+        Map<String, Object> latestNewsEntity = new HashMap<>();
         latestNewsEntity.put("date", date);
         latestNewsEntity.put("stories", stories);
         latestNewsEntity.put("top_stories", topStories);

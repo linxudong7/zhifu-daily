@@ -26,7 +26,7 @@ import java.util.Map;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class OldNewsEntity implements Message {
+public class OldNewsEntity {
     /**
      * 需要查询11月18日的消息，应为 20131119
      */
@@ -51,9 +51,8 @@ public class OldNewsEntity implements Message {
         this.stories = stories;
     }
 
-    @Override
     public String toJsonString() {
-        Map<String, Object> latestNewsEntity = new HashMap<String, Object>();
+        Map<String, Object> latestNewsEntity = new HashMap<>();
         latestNewsEntity.put("date", date);
         latestNewsEntity.put("stories", stories);
         return JSON.toJSONString(latestNewsEntity);

@@ -77,9 +77,5 @@ public class ZhihuServiceTest {
         HotNewsEntity hotNewsEntity = hotNewsResponse.getHotNewsEntity();
         System.out.println(hotNewsEntity.toJsonString());
     }
-    @Test
-    public void Test() {
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        System.out.println(uuid);
-    }
+
 }

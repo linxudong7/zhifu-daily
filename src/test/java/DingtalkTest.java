@@ -9,12 +9,11 @@
  * 作者姓名           修改时间           版本号              描述
  */
 
-import lxd.zhihu.entity.LatestNewsEntity;
-import lxd.zhihu.entity.MessageInfo;
-import lxd.zhihu.service.DingtalkService;
+import lxd.zhihu.enums.ZhihuMsgType;
 import lxd.zhihu.service.ZhihuNewsService;
-import lxd.zhihu.service.zhihu.requests.QueryLatestNewsRequest;
-import lxd.zhihu.service.zhihu.responses.LatestNewsResponse;
+import lxd.zhihu.service.dingtalk.WebhookConfig;
+import lxd.zhihu.service.dingtalk.requests.DingtalkMarkdownRequest;
+import lxd.zhihu.task.DingtalkChatbotTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +37,14 @@ import java.util.List;
 public class DingtalkTest {
 
     @Autowired
-    private ZhihuNewsService zhihuNewsService;
-
-    @Autowired
-    private DingtalkService dingtalkService;
+    private DingtalkChatbotTask dingtalkChatbotTask;
 
     @Test
     public void dingtalkTest() {
-        List<String> atMobiles = new ArrayList<String>();
+        List<String> atMobiles =  new ArrayList<>();
         atMobiles.add("13073673633");
-        dingtalkService.sendMessage(new MessageInfo("markdown","https://oapi.dingtalk.com/robot/send?access_token=38846b13c359d2f2ac9985df73133c9ef9694353bf640b9f08ae771e352c8bd7",atMobiles,"car",3600L));
-
+        DingtalkMarkdownRequest request = new DingtalkMarkdownRequest("markdown", WebhookConfig.CHATBOT_WEBHOOK, atMobiles, 3600L, ZhihuMsgType.LstestNews.getType());
+        dingtalkChatbotTask.sendLatestNewsMarkdownMessage(request);
     }
 
 }

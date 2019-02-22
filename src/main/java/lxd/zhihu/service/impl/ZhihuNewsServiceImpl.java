@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lxd.zhihu.aspect.LogAnnotation;
 import lxd.zhihu.entity.HotNewsEntity;
 import lxd.zhihu.entity.LatestNewsEntity;
 import lxd.zhihu.entity.OldNewsEntity;
@@ -35,7 +35,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
 
 
 /**
@@ -51,10 +50,18 @@ public class ZhihuNewsServiceImpl implements ZhihuNewsService {
 
     private static final Logger logger = LoggerFactory.getLogger(ZhihuNewsServiceImpl.class);
 
+/*    @Autowired
+    private ZhihuClient zhihuClient;*/
+
+    private final ZhihuClient zhihuClient;
+
     @Autowired
-    private ZhihuClient zhihuClient;
+    public ZhihuNewsServiceImpl(ZhihuClient zhihuClient) {
+        this.zhihuClient = zhihuClient;
+    }
 
     @Override
+    @LogAnnotation
     public LatestNewsResponse queryLatestNews(QueryLatestNewsRequest request) {
         LatestNewsResponse latestNewsResponse = new LatestNewsResponse();
 
@@ -68,6 +75,7 @@ public class ZhihuNewsServiceImpl implements ZhihuNewsService {
     }
 
     @Override
+    @LogAnnotation
     public OldNewsResponse queryOldNewsByDate(QueryOldNewsRequest request) {
         OldNewsResponse oldNewsResponse = new OldNewsResponse();
 
@@ -82,6 +90,7 @@ public class ZhihuNewsServiceImpl implements ZhihuNewsService {
     }
 
     @Override
+    @LogAnnotation
     public HotNewsResponse queryHotNews(QueryHotNewsRequest request) {
         HotNewsResponse hotNewsResponse = new HotNewsResponse();
 
@@ -95,20 +104,32 @@ public class ZhihuNewsServiceImpl implements ZhihuNewsService {
     }
 
     @Override
+    @LogAnnotation
     public List<OldNewsResponse> listOldNewsByDateRange(String dateRangeStr) {
         List<OldNewsResponse> oldNewsResponses = new ArrayList<>();
 
-        List<ListenableFuture<Integer>> futures = Lists.newArrayList();
-
         if (StringUtils.contains(dateRangeStr, "/")) {
             List<String> dateStrs = DateUtil.getDateRange(dateRangeStr);
-            for (String dateStr : dateStrs
-            ) {
-                futures.add(ThreadPool.executorService.submit(() -> {
-                    oldNewsResponses.add(queryOldNewsByDate(new QueryOldNewsRequest(dateStr)));
-                    return 1;
-                }));
+            if (dateStrs != null) {
+                threadPoolBatchProcess(dateStrs,oldNewsResponses);
             }
+        }
+        return oldNewsResponses;
+    }
+
+    /**
+     * 线程池批量处理
+     * @param dateStrs 时间
+     * @param oldNewsResponses 返回值
+     */
+    private void threadPoolBatchProcess(List<String> dateStrs, List<OldNewsResponse> oldNewsResponses) {
+        List<ListenableFuture<Integer>> futures = Lists.newArrayList();
+        for (String dateStr : dateStrs
+        ) {
+            futures.add(ThreadPool.executorService.submit(() -> {
+                oldNewsResponses.add(queryOldNewsByDate(new QueryOldNewsRequest(dateStr)));
+                return 1;
+            }));
         }
         final ListenableFuture<List<Integer>> resultsFuture = Futures.successfulAsList(futures);
         try {
@@ -116,15 +137,13 @@ public class ZhihuNewsServiceImpl implements ZhihuNewsService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-
-/*      原生java中的方法
+        /*      原生java中的方法
         ThreadPool.executorService.shutdown();
         while (true) {
             if (ThreadPool.executorService.isTerminated()) {
                 break;
             }
         }*/
-        return oldNewsResponses;
     }
 
 

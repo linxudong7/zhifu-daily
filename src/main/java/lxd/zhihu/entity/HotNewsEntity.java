@@ -25,7 +25,7 @@ import java.util.Map;
  * @create 2019/2/21
  * @since 1.0.0
  */
-public class HotNewsEntity implements Message {
+public class HotNewsEntity {
     private List<HotNewEntity> recent;
 
     public List<HotNewEntity> getRecent() {
@@ -36,7 +36,6 @@ public class HotNewsEntity implements Message {
         this.recent = recent;
     }
 
-    @Override
     public String toJsonString() {
         Map<String, Object> hotNewsEntity = new HashMap<>();
         hotNewsEntity.put("recent", recent);

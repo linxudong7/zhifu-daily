@@ -18,6 +18,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -59,13 +60,17 @@ public class ZhihuClient {
         CloseableHttpResponse httpResponse =null;
         baseZhihuResponse.setRequestId(request.getRequestId());
         try {
-            if (HttpType.GET.getType().equals(request.getHttpType())) {
+            /*if (
+                HttpType.GET.getType().equals(request.getHttpType())) {*/
                 HttpGet get = new HttpGet(request.getUri());
                 httpResponse = client.execute(get);
-            } else {
+/*            } else {
                 HttpPost post = new HttpPost(request.getUri());
+                post.addHeader("Content-Type", "application/json; charset=utf-8");
+                StringEntity se = new StringEntity(message.toJsonString(), "utf-8");
+                post.setEntity(se);
                 httpResponse = client.execute(post);
-            }
+            }*/
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }

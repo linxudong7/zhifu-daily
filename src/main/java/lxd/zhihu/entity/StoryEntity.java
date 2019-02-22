@@ -25,7 +25,7 @@ import java.util.Map;
  * @create 2019/2/19
  * @since 1.0.0
  */
-public class StoryEntity implements Message {
+public class StoryEntity {
     @JSONField(ordinal = 0)
     private List<String> images;
     @JSONField(ordinal = 1)
@@ -77,9 +77,8 @@ public class StoryEntity implements Message {
         this.title = title;
     }
 
-    @Override
     public String toJsonString() {
-        Map<String, Object> story = new HashMap<String, Object>();
+        Map<String, Object> story = new HashMap<>();
         story.put("images", images);
         story.put("type", type);
         story.put("id", id);

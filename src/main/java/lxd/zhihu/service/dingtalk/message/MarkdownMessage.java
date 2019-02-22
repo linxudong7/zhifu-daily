@@ -1,4 +1,4 @@
-package lxd.zhihu.message;
+package lxd.zhihu.service.dingtalk.message;
 
 import com.alibaba.fastjson.JSON;
 
@@ -120,6 +120,7 @@ public class MarkdownMessage implements Message {
         sb.append("- " + unorderItem.get(unorderItem.size() - 1));
         return sb.toString();
     }
+
     @Override
     public String toJsonString() {
         Map<String, Object> result = new HashMap<String, Object>();

@@ -54,8 +54,9 @@ public interface ZhihuNewsService {
 
     /**
      * 根据时间区间查询过往消息
-     * @param dateRangeStr 格式:20180101/20181231
+     * @param startDateStr 格式:"yyyyMMdd"
+     * @param endDateStr 格式:"yyyyMMdd"
      * @return
      */
-    List<OldNewsResponse> listOldNewsByDateRange(String dateRangeStr);
+    List<OldNewsResponse> listOldNewsByDateRange(String startDateStr, String endDateStr);
 }

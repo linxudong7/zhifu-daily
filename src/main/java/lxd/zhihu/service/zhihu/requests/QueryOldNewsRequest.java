@@ -36,7 +36,6 @@ public class QueryOldNewsRequest extends BaseZhihuRequest<OldNewsResponse> {
     public QueryOldNewsRequest(String dateStr) {
         this.setUri("https://news-at.zhihu.com/api/4/news/before/" + dateStr);
         this.setHttpType("get");
-        this.setRequestId(UUID.randomUUID().toString().replaceAll("-", ""));
         this.dateStr = dateStr;
     }
 }

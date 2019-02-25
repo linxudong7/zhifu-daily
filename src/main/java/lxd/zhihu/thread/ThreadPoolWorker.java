@@ -1,6 +1,6 @@
 /**
  * Copyright (C), 2015-2019, XXX有限公司
- * FileName: ThreadPool
+ * FileName: ThreadPoolWorker
  * Author:   rubby
  * Date:     2019/2/21 21:52
  * Description:
@@ -24,12 +24,14 @@ import java.util.concurrent.*;
  * @create 2019/2/21
  * @since 1.0.0
  */
-public class ThreadPool {
+public class ThreadPoolWorker {
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("线程名称-%s").build();
 
     public static final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(
-            new ThreadPoolExecutor(4, 8, 0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy()));
+            Executors.newFixedThreadPool(8, namedThreadFactory));
+
+    public static final ListeningExecutorService executorService2 = MoreExecutors.listeningDecorator(
+            Executors.newFixedThreadPool(8, namedThreadFactory));
 }

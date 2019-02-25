@@ -11,7 +11,6 @@
 package lxd.zhihu.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.dingtalk.chatbot.message.Message;
 
 import java.util.HashMap;
 import java.util.List;

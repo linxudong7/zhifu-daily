@@ -9,24 +9,30 @@
  * 作者姓名           修改时间           版本号              描述
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lxd.zhihu.entity.HotNewsEntity;
 import lxd.zhihu.entity.LatestNewsEntity;
 import lxd.zhihu.entity.OldNewsEntity;
+import lxd.zhihu.entity.StoryEntity;
 import lxd.zhihu.service.ZhihuNewsService;
+import lxd.zhihu.service.dingtalk.message.MarkdownMessage;
 import lxd.zhihu.service.zhihu.requests.QueryHotNewsRequest;
 import lxd.zhihu.service.zhihu.requests.QueryLatestNewsRequest;
 import lxd.zhihu.service.zhihu.requests.QueryOldNewsRequest;
 import lxd.zhihu.service.zhihu.responses.HotNewsResponse;
 import lxd.zhihu.service.zhihu.responses.LatestNewsResponse;
 import lxd.zhihu.service.zhihu.responses.OldNewsResponse;
+import lxd.zhihu.utils.JinJavaUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -62,7 +68,7 @@ public class ZhihuServiceTest {
 
     @Test
     public void ListOldNewsTest() {
-        List<OldNewsResponse> oldNewsResponses = zhihuNewsService.listOldNewsByDateRange("20180102/20180202");
+        List<OldNewsResponse> oldNewsResponses = zhihuNewsService.listOldNewsByDateRange("20180102","20180202");
         for (OldNewsResponse response: oldNewsResponses
              ) {
             OldNewsEntity oldNewsEntity = response.getOldNewsEntity();
@@ -76,6 +82,29 @@ public class ZhihuServiceTest {
         System.out.println(hotNewsResponse.toString());
         HotNewsEntity hotNewsEntity = hotNewsResponse.getHotNewsEntity();
         System.out.println(hotNewsEntity.toJsonString());
+    }
+
+    @Test
+    public void markdownTest() {
+
+        QueryLatestNewsRequest queryLatestNewsRequest = new QueryLatestNewsRequest();
+        LatestNewsResponse latestNewsResponse = zhihuNewsService.queryLatestNews(queryLatestNewsRequest);
+
+        MarkdownMessage markdownMessage = new MarkdownMessage();
+
+        List<StoryEntity> stories = latestNewsResponse.getLatestNewsEntity().getStories();
+        markdownMessage.setTitle(stories.get(0).getTitle());
+
+        HashMap<String, Object> context = Maps.newHashMap();
+        context.put("stories", stories);
+        ArrayList<String> atMobiles = Lists.newArrayList();
+        atMobiles.add("13073673633");
+        context.put("atMobiles", atMobiles);
+        markdownMessage.setAtMobiles(atMobiles);
+
+        String mardownText = JinJavaUtil.toMardownText(context, "zhihu.md");
+        markdownMessage.setText(mardownText);
+        System.out.println(markdownMessage.toJsonString());
     }
 
 }

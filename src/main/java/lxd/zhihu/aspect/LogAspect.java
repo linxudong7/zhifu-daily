@@ -13,7 +13,6 @@ package lxd.zhihu.aspect;
 import com.alibaba.fastjson.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -22,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 
 
@@ -43,59 +44,29 @@ public class LogAspect {
     }
 
     /**
-     * 前置通知 用于拦截操作，在方法返回后执行
-     * @param joinPoint 切点
-     */
-    @AfterReturning(pointcut = "logPointCut()")
-    public void doBefore(JoinPoint joinPoint) {
-        handleLog(joinPoint, null);
-    }
-
-    /**
      * 拦截异常操作，有异常时执行
      *
      * @param joinPoint 切点
-     * @param e 异常
+     * @param e         异常
      */
     @AfterThrowing(value = "logPointCut()", throwing = "e")
     public void doAfter(JoinPoint joinPoint, Exception e) {
-        handleLog(joinPoint, e);
-    }
-
-    private void handleLog(JoinPoint joinPoint, Exception e) {
         try {
-            //获得注解
             LogAnnotation logAnnotation = getAnnotationLog(joinPoint);
             if (logAnnotation == null) {
                 return;
             }
-            //类名
-            String className = joinPoint.getTarget().getClass().getName();
-            //方法名
-            String methodName = joinPoint.getSignature().getName();
 
-            MethodSignature ms = (MethodSignature) joinPoint.getSignature();
-            //入参key
-            String[] parameterNames = ms.getParameterNames();
-            //入参value
-            Object[] arguments = joinPoint.getArgs();
-            Method method = ms.getMethod();
+            //{"exceptionSevice":"","stack":"","argus":["",""],"isSucess":"true","method":"callxxx"}
+            logger.error("exceptionSevice：{}", joinPoint.getTarget().getClass().getName());
+            logger.error("stack：{}", getStack(e));
+            logger.error("argus：{}", JSONObject.toJSONString(joinPoint.getArgs()));
+            //logger.error("isSucess：{}", );
+            logger.error("method：{}", joinPoint.getSignature().getName());
+            logger.error("exceptionMessage:{}", e.getMessage());
 
-            //String action = logAnnotation.action();
-            //String title = logAnnotation.title();
-            //打印日志，如有需要还可以存入数据库
-            //logger.info(">>>>>>>>>>>>>模块名称：{}",title);
-            //logger.info(">>>>>>>>>>>>>操作名称：{}",action);
-            logger.debug(">>>>>>>>>>>>>className：{}", className);
-            logger.debug(">>>>>>>>>>>>>methodName：{}", methodName);
-            logger.debug(">>>>>>>>>>>>>methodSignature:{}", ms);
-            logger.debug(">>>>>>>>>>>>>arguments:{}", JSONObject.toJSONString(arguments));
-            logger.debug(">>>>>>>>>>>>>parameterNames:{}", JSONObject.toJSONString(parameterNames));
-            logger.debug(">>>>>>>>>>>>>method:{}", JSONObject.toJSONString(method));
 
         } catch (Exception exp) {
-            // 记录本地异常日志
-            logger.error("====系统抛出前置通知异常====");
             logger.error("异常信息:{}", exp.getMessage());
         }
     }
@@ -111,6 +82,12 @@ public class LogAspect {
             return method.getAnnotation(LogAnnotation.class);
         }
         return null;
+    }
+
+    private static String getStack(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw, true));
+        return sw.getBuffer().toString();
     }
 
 }

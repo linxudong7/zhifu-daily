@@ -31,4 +31,35 @@ http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!-- 启用CGliB -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
+    <!--定义QuartzTaskTest-->
+    <bean name="QuartzTaskTestFactoryBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="quartzTaskTest"/>
+        <property name="targetMethod" value="run"/>
+    </bean>
+    <bean id="quartzTaskTestTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="QuartzTaskTestFactoryBean"/>
+        <property name="cronExpression" value="/10 * * * * ?"/>
+    </bean>
+
+    <!--定义dingtalkChatbotTask-->
+    <bean name="dingtalkChatbotTaskFactoryBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="dingtalkChatbotTask"/>
+        <property name="targetMethod" value="sendLatestNewsMarkdownMessage"/>
+    </bean>
+    <bean id="dingtalkChatbotTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="dingtalkChatbotTaskFactoryBean"/>
+        <property name="cronExpression" value="/10 * * * * ?"/>
+    </bean>
+
+    <!--最终把所有触发器添加到SchedulerFactoryBean-->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--<ref bean="quartzTaskTestTrigger"/>-->
+                <!--<ref bean="dingtalkChatbotTaskTrigger"/>-->
+
+            </list>
+        </property>
+    </bean>
+
 </beans>

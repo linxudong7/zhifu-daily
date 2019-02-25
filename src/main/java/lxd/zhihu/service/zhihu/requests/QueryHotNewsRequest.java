@@ -26,7 +26,6 @@ public class QueryHotNewsRequest extends BaseZhihuRequest<HotNewsResponse> {
     public QueryHotNewsRequest() {
         this.setUri("https://news-at.zhihu.com/api/3/news/hot");
         this.setHttpType("get");
-        this.setRequestId(UUID.randomUUID().toString().replaceAll("-", ""));
     }
 
 }

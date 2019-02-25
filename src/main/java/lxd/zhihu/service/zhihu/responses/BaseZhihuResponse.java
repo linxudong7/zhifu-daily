@@ -22,7 +22,7 @@ import java.util.Map;
  * @create 2019/2/20
  * @since 1.0.0
  */
-public class BaseZhihuResponse<T> {
+public class BaseZhihuResponse<T>{
 
     private boolean isSuccess;
 

@@ -11,13 +11,4 @@ public @interface LogAnnotation {
      */
     String description()  default "";
 
-    /**
-     * 模块
-     */
-    String title() default "";
-
-    /**
-     * 功能
-     */
-    String action() default "";
 }

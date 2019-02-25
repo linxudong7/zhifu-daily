@@ -27,6 +27,5 @@ public class QueryLatestNewsRequest extends BaseZhihuRequest<LatestNewsResponse>
     public QueryLatestNewsRequest() {
         this.setUri("https://news-at.zhihu.com/api/4/news/latest");
         this.setHttpType("get");
-        this.setRequestId(UUID.randomUUID().toString().replaceAll("-", ""));
     }
 }

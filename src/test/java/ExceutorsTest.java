@@ -66,35 +66,6 @@ public class ExceutorsTest {
         pool.shutdown();
 
     }
-    @Test
-    public void test2() {
-        ExecutorService pool = Executors.newFixedThreadPool(8);
-        //ThreadPool threadPool=new ThreadPool();
-        System.out.println("批处理开始");
-
-        for(int i=0;i<300000;i++){
-            //pool.execute(new Task(String.valueOf(i)));
-            pool.execute(new Runnable() {
-                private String name="1";
-                @Override
-                public void run() {
-                    System.out.println("thread-"+name+" start running");
-                }
-            });
-            System.out.println("第"+i+"个任务提交");
-        }
-        System.out.println("批处理结束");
-
-    }
-    @Test
-    public void test3() {
-        System.out.println("批处理开始");
-        for (int i = 0; i < 300000; i++) {
-            System.out.println("thread- start running");
-            System.out.println("第"+i+"个任务提交");
-        }
-        System.out.println("批处理结束");
-    }
 
 }
 

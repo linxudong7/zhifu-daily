@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }}的个人页面</title>
+</head>
+<body>
+<b>你好，{{ name }}</b><br>
+<div>您的倒霉同学们又来看你了
+    <ul>
+        <li>{{201601}}:{{students.get("201601")}}</li>
+        <li>{{201602}}:{{students.get("201602")}}</li>
+        <li>{{201603}}:{{students.get("201603")}}</li>
+    </ul>
+</div>
+<div>
+    您还有太多的任务没做
+    <ul>
+        {% for task in tasks %}
+        {% if task != '炼金术'%}
+        <li>{{ task if task != '丢人' else task+'!'}}</li>
+        {% endif %}
+        {% endfor %}
+        <li>...</li>
+    </ul>
+</div>
+</body>
+<script>
+</script>
+</html>

@@ -10,8 +10,9 @@
  */
 package lxd.zhihu.utils;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
+import lxd.zhihu.exception.BizException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 〈一句话功能简述〉<br> 
+ * 〈一句话功能简述〉<br>
  * 〈〉
  *
  * @author rubby
@@ -31,21 +32,34 @@ public class DateUtil {
 
     /**
      * 获取时间区间
-     * @param dateRangeStr 格式： 20180101/20181231
+     * @param startDateStr 格式： 20180101
+     * @param endDateStr 格式： 20181231
      * @return ["20180101",...,"20181231"]
      */
-    public static List<String> getDateRange(String dateRangeStr) {
-        if (StringUtils.isBlank(dateRangeStr)) {
-            return null;
+    public static List<String> getDateRange(String startDateStr, String endDateStr) {
+        if (Strings.isNullOrEmpty(startDateStr)) {
+            throw new IllegalException("开始时间参数缺少");
         }
-        String[] tmp = dateRangeStr.split("/");
-        LocalDate startDate = LocalDate.parse(tmp[0], yyyyMMdd);
-        LocalDate endDate = LocalDate.parse(tmp[1], yyyyMMdd);
+        if (Strings.isNullOrEmpty(endDateStr)) {
+            throw new IllegalException("结束时间参数缺少");
+        }
+        LocalDate startDate;
+        LocalDate endDate;
+        try {
+            startDate = LocalDate.parse(startDateStr, yyyyMMdd);
+            endDate = LocalDate.parse(endDateStr, yyyyMMdd);
+        } catch (Exception e) {
+            throw new IllegalException("时间格式有误");
+        }
+        int daysNum  = (int)(endDate.toEpochDay() - startDate.toEpochDay());
+        if (daysNum < 0) {
+            throw  new IllegalException("结束时间不能小于开始时间");
+        }
         ArrayList<String> result = Lists.newArrayList();
-        do {
+        for (int i = 0; i < daysNum; i++) {
             result.add(startDate.format(yyyyMMdd));
             startDate = startDate.plusDays(1);
-        } while (startDate.isBefore(endDate));
+        }
         result.add(endDate.format(yyyyMMdd));
         return result;
     }

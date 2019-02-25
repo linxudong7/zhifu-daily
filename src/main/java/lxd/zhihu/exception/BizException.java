@@ -23,30 +23,18 @@ package lxd.zhihu.exception;
  * @create 2019/2/19
  * @since 1.0.0
  */
-public class RRException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
-	
+public class BizException extends RuntimeException {
+
     private String msg;
-    private int code = 500;
-    
-    public RRException(String msg) {
+    private String code;
+
+	public BizException(String msg) {
 		super(msg);
 		this.msg = msg;
 	}
-	
-	public RRException(String msg, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
-	}
-	
-	public RRException(String msg, int code) {
+
+	public BizException(String code, String msg) {
 		super(msg);
-		this.msg = msg;
-		this.code = code;
-	}
-	
-	public RRException(String msg, int code, Throwable e) {
-		super(msg, e);
 		this.msg = msg;
 		this.code = code;
 	}
@@ -55,17 +43,8 @@ public class RRException extends RuntimeException {
 		return msg;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
-	}
-	
-	
 }

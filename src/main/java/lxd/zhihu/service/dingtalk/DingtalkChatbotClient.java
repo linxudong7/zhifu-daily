@@ -12,7 +12,7 @@ package lxd.zhihu.service.dingtalk;
 
 import com.alibaba.fastjson.JSONObject;
 import lxd.zhihu.service.dingtalk.message.Message;
-import lxd.zhihu.service.dingtalk.responses.SendResult;
+import lxd.zhihu.service.dingtalk.response.SendResult;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -37,9 +37,9 @@ public class DingtalkChatbotClient {
 
     private static HttpClient httpclient = HttpClients.createDefault();
 
-    public SendResult send(String webhook, Message message) throws IOException {
+    public SendResult send(String webHookToken, Message message) throws IOException {
 
-        HttpPost httppost = new HttpPost(webhook);
+        HttpPost httppost = new HttpPost(String.format("https://oapi.dingtalk.com/robot/send?access_token=%s",webHookToken));
         httppost.addHeader("Content-Type", "application/json; charset=utf-8");
         StringEntity se = new StringEntity(message.toJsonString(), "utf-8");
         httppost.setEntity(se);

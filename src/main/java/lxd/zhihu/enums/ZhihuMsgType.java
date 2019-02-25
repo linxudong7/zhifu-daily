@@ -2,17 +2,17 @@ package lxd.zhihu.enums;
 
 public enum ZhihuMsgType {
     /**
-     * 最新消息
+     * 每日最新消息
      */
-    LstestNews("latestNews"),
+    LATEST_NEWS("latestNews"),
     /**
-     * 老消息
+     * 过往消息
      */
-    OldNews("oldNews"),
+    OLD_NEWS("oldNews"),
     /**
      * 热门消息
      */
-    HotNews("hotNews");
+    HOT_NEWS("hotNews");
 
     private String type;
 
